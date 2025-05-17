@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Irrigation System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2196F3;
+            --danger-color: #f44336;
+            --warning-color: #ff9800;
+            --light-color: #f1f1f1;
+            --dark-color: #333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        /* Auth Forms */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #e0f7fa, #bbdefb);
+        }
+
+        .auth-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .auth-header p {
+            color: #666;
+        }
+
+        .auth-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .auth-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .auth-form input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .auth-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-form button:hover {
+            background-color: #388E3C;
+        }
+
+        .auth-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .auth-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: none;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 i {
+            margin-right: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-btn {
+            background: none;
+            border: none;
+            color: var(--dark-color);
+            cursor: pointer;
+            margin-right: 20px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-btn i {
+            margin-right: 5px;
+        }
+
+        .logout-btn {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .environment-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .env-card {
+            flex: 1;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            text-align: center;
+            margin: 0 10px;
+        }
+
+        .env-card:first-child {
+            margin-left: 0;
+        }
+
+        .env-card:last-child {
+            margin-right: 0;
+        }
+
+        .env-card h2 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .env-card .value {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .env-card .value i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+
+        .env-card .unit {
+            font-size: 18px;
+            color: #666;
+            margin-left: 5px;
+        }
+
+        .mode-control {
+            background-color: rgb(255, 255, 255);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .mode-control h2 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .toggle-container {
+            display: inline-block;
+            position: relative;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            width: 200px;
+            height: 40px;
+            background: #ebebeb;
+            border-radius: 100px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-label .toggle-text {
+            padding: 0 15px;
+            font-weight: bold;
+        }
+
+        .toggle-checkbox {
+            height: 0;
+            width: 0;
+            visibility: hidden;
+            position: absolute;
+        }
+
+        .toggle-checkbox:checked + .toggle-label {
+            background: var(--primary-color);
+        }
+
+        .toggle-checkbox:checked + .toggle-label .toggle-button {
+            left: calc(100% - 5px);
+            transform: translateX(-100%);
+        }
+
+        .toggle-checkbox:checked + .toggle-label .toggle-auto {
+            color: white;
+        }
+
+        .toggle-checkbox:not(:checked) + .toggle-label .toggle-manual {
+            color: white;
+        }
+
+        .toggle-button {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 45px;
+            transition: 0.3s;
+            background: #fff;
+            box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
+        }
+
+        .moisture-section {
+            margin-bottom: 30px;
+        }
+
+        .moisture-section h2 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            font-size: 18px;
+        }
+
+        .moisture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .moisture-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .moisture-card.low {
+            background-color: #ffebee;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .moisture-card.medium {
+            background-color: #fff8e1;
+            border-left: 5px solid var(--warning-color);
+        }
+
+        .moisture-card.good {
+            background-color: #e8f5e9;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .moisture-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+
+        .moisture-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            margin-right:20px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .moisture-value::after {
+            content: "%";
+            font-size: 18px;
+            position: absolute;
+            top: 0;
+            right: -20px;
+        }
+
+        .moisture-card.low .moisture-value {
+            color: var(--danger-color);
+        }
+
+        .moisture-card.medium .moisture-value {
+            color: var(--warning-color);
+        }
+
+        .moisture-card.good .moisture-value {
+            color: var(--primary-color);
+        }
+
+        .moisture-status {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .moisture-card.low .moisture-status {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .moisture-card.medium .moisture-status {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .moisture-card.good .moisture-status {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .control-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .control-section h2 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            font-size: 18px;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .control-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .control-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .switch {
+    position: relative;
+    display: inline-block;
+    width: 70px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e0e0e0;
+    transition: .4s;
+    border-radius: 34px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.slider:after {
+    content: "OFF";
+    color: #888;
+    display: block;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 70%;
+    font-size: 10px;
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+}
+
+input:checked + .slider:after {
+    content: "ON";
+    left: 30%;
+    color: white;
+}
+input:checked + .slider {
+    background-color: var(--primary-color);
+    background-image: linear-gradient(to right, #4CAF50, #81C784);
+}
+
+input:focus + .slider {
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+input:checked + .slider:before {
+    transform: translateX(36px);
+}
+
+        .profile-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: black;
+        }
+
+        .profile-info {
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .profile-info h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .profile-info p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .profile-info .user-email {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .environment-section {
+                flex-direction: column;
+            }
+
+            .env-card {
+                margin: 0 0 15px 0;
+            }
+
+            .moisture-grid, .control-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Alert styles */
+        .alert {
+            padding: 10px;
+            background-color: #f44336;
+            color: white;
+            margin-bottom: 15px;
+            border-radius: var(--border-radius);
+            display: none;
+        }
+
+        .alert.success {
+            background-color: var(--primary-color);
+        }
+
+        .alert-closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .alert-closebtn:hover {
+            color: black;
+        }
+
+        .footer-styles {
+            background-color: #03fa0b68;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginForm" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1><i class="fas fa-leaf"></i> Smart Irrigation</h1>
+                <p>Login to access your dashboard</p>
+            </div>
+            <div id="loginAlert" class="alert">
+                <span class="alert-closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <span id="loginAlertMessage"></span>
+            </div>
+            <form class="auth-form" id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit">Login</button>
+                <div class="auth-links">
+                    <a href="#" id="to-register">Create an account</a>
+                    <a href="#" id="to-reset">Forgot password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerForm" class="auth-container" style="display: none;">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1><i class="fas fa-leaf"></i> Smart Irrigation</h1>
+                <p>Create a new account</p>
+            </div>
+            <div id="registerAlert" class="alert">
+                <span class="alert-closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <span id="registerAlertMessage"></span>
+            </div>
+            <form class="auth-form" id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Name</label>
+                    <input type="text" id="register-name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirm Password</label>
+                    <input type="password" id="register-confirm-password" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit">Register</button>
+                <div class="auth-links">
+                    <a href="#" id="to-login-from-register">Already have an account?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reset Password Form -->
+    <div id="resetForm" class="auth-container" style="display: none;">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1><i class="fas fa-leaf"></i> Smart Irrigation</h1>
+                <p>Reset your password</p>
+            </div>
+            <div id="resetAlert" class="alert">
+                <span class="alert-closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <span id="resetAlertMessage"></span>
+            </div>
+            <form class="auth-form" id="reset-form">
+                <div class="form-group">
+                    <label for="reset-email">Email</label>
+                    <input type="email" id="reset-email" placeholder="Enter your email" required>
+                </div>
+                <button type="submit">Reset Password</button>
+                <div class="auth-links">
+                    <a href="#" id="to-login-from-reset">Back to login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <header>
+            <div class="logo">
+                <h1><i class="fas fa-leaf"></i> Smart Irrigation System</h1>
+            </div>
+            <div class="user-actions">
+                <button id="profile-button" class="profile-btn">
+                    <i class="fas fa-user-circle"></i> <span id="user-name">User</span>
+                </button>
+                <button id="logout-button" class="logout-btn">Logout</button>
+            </div>
+        </header>
+
+        <section class="environment-section">
+            <div class="env-card">
+                <h2>Temperature</h2>
+                <div class="value">
+                    <i class="fas fa-thermometer-half"></i>
+                    <span id="temperature-value">0</span>
+                    <span class="unit">°C</span>
+                </div>
+            </div>
+            <div class="env-card">
+                <h2>Humidity</h2>
+                <div class="value">
+                    <i class="fas fa-tint"></i>
+                    <span id="humidity-value">0</span>
+                    <span class="unit">%</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mode-control">
+            <h2>System Mode</h2>
+            <div class="toggle-container">
+                <input type="checkbox" id="mode-toggle" class="toggle-checkbox">
+                <label for="mode-toggle" class="toggle-label">
+                    <span class="toggle-manual toggle-text">Manual</span>
+                    <span class="toggle-button"></span>
+                    <span class="toggle-auto toggle-text">Auto</span>
+                </label>
+            </div>
+        </section>
+
+        <section class="moisture-section">
+            <h2>Moisture Levels</h2>
+            <div class="moisture-grid" id="moisture-grid">
+                <!-- Will be populated dynamically -->
+            </div>
+        </section>
+
+        <section class="control-section" id="control-section">
+            <h2>Manual Controls</h2>
+            <div class="control-grid" id="control-grid">
+                <!-- Will be populated dynamically -->
+            </div>
+        </section>
+
+        <!-- Profile Modal -->
+        <div id="profile-modal" class="profile-modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div class="profile-info">
+                    <h2>User Profile</h2>
+                    <p>Name: <span id="profile-name">User</span></p>
+                    <p>Email: <span id="profile-email" class="user-email">user@example.com</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-styles">
+        <p>&copy; 2025 Smart Irrigation System. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.2/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.2/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.2/firebase-database-compat.min.js"></script>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+			authDomain: "your-project-id.firebaseapp.com",
+			databaseURL: "https://your-project-id-default-rtdb.firebaseio.com",
+			projectId: "your-project-id",
+			storageBucket: "your-project-id.appspot.com",
+			messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+			appId: "YOUR_APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const resetForm = document.getElementById('resetForm');
+        const dashboard = document.getElementById('dashboard');
+        const profileModal = document.getElementById('profile-modal');
+        const closeBtn = document.querySelector('.close-btn');
+        const profileButton = document.getElementById('profile-button');
+        const logoutButton = document.getElementById('logout-button');
+        const toRegister = document.getElementById('to-register');
+        const toLoginFromRegister = document.getElementById('to-login-from-register');
+        const toReset = document.getElementById('to-reset');
+        const toLoginFromReset = document.getElementById('to-login-from-reset');
+        const modeToggle = document.getElementById('mode-toggle');
+        const controlSection = document.getElementById('control-section');
+        const userName = document.getElementById('user-name');
+        const profileName = document.getElementById('profile-name');
+        const profileEmail = document.getElementById('profile-email');
+
+        // Auth navigation
+        toRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'flex';
+        });
+
+        toLoginFromRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            registerForm.style.display = 'none';
+            loginForm.style.display = 'flex';
+        });
+
+        toReset.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            resetForm.style.display = 'flex';
+        });
+
+        toLoginFromReset.addEventListener('click', function(e) {
+            e.preventDefault();
+            resetForm.style.display = 'none';
+            loginForm.style.display = 'flex';
+        });
+
+        // Alert functionality
+        function showAlert(alertId, message, isSuccess = false) {
+            const alert = document.getElementById(alertId);
+            const alertMessage = document.getElementById(alertId + 'Message');
+            
+            alertMessage.textContent = message;
+            alert.style.display = 'block';
+            
+            if (isSuccess) {
+                alert.classList.add('success');
+            } else {
+                alert.classList.remove('success');
+            }
+        }
+
+        // Auth forms submission
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    loginForm.style.display = 'none';
+                    dashboard.style.display = 'block';
+                })
+                .catch((error) => {
+                    showAlert('loginAlert', error.message);
+                });
+        });
+
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                showAlert('registerAlert', 'Passwords do not match');
+                return;
+            }
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return user.updateProfile({
+                        displayName: name
+                    }).then(() => {
+                        showAlert('registerAlert', 'Registration successful! You can now login.', true);
+                        setTimeout(() => {
+                            registerForm.style.display = 'none';
+                            loginForm.style.display = 'flex';
+                        }, 2000);
+                    });
+                })
+                .catch((error) => {
+                    showAlert('registerAlert', error.message);
+                });
+        });
+
+        document.getElementById('reset-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('reset-email').value;
+            
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    showAlert('resetAlert', 'Password reset email sent. Check your inbox.', true);
+                    setTimeout(() => {
+                        resetForm.style.display = 'none';
+                        loginForm.style.display = 'flex';
+                    }, 3000);
+                })
+                .catch((error) => {
+                    showAlert('resetAlert', error.message);
+                });
+        });
+
+        // Logout
+        logoutButton.addEventListener('click', function() {
+            auth.signOut().then(() => {
+                dashboard.style.display = 'none';
+                loginForm.style.display = 'flex';
+            }).catch((error) => {
+                console.error('Logout Error:', error);
+            });
+        });
+
+        // Profile Modal
+        profileButton.addEventListener('click', function() {
+            profileModal.style.display = 'block';
+        });
+
+        closeBtn.addEventListener('click', function() {
+            profileModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target == profileModal) {
+                profileModal.style.display = 'none';
+            }
+        });
+
+        // System Mode Toggle
+        modeToggle.addEventListener('change', function() {
+            const mode = this.checked ? 'auto' : 'manual';
+            controlSection.style.display = mode === 'manual' ? 'block' : 'none';
+            
+            // Update Firebase
+            database.ref('Mode').set(mode);
+        });
+
+        // Auth state change
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                userName.textContent = user.displayName || 'User';
+                profileName.textContent = user.displayName || 'User';
+                profileEmail.textContent = user.email;
+                
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'none';
+                resetForm.style.display = 'none';
+                dashboard.style.display = 'block';
+                
+                // Initialize data listeners
+                initializeDashboard();
+            } else {
+                // User is signed out
+                dashboard.style.display = 'none';
+                loginForm.style.display = 'flex';
+            }
+        });
+
+        // Dashboard Initialization
+        function initializeDashboard() {
+            // Get system mode
+            database.ref('Mode').on('value', (snapshot) => {
+                const mode = snapshot.val();
+                modeToggle.checked = mode === 'auto';
+                controlSection.style.display = mode === 'manual' ? 'block' : 'none';
+            });
+            
+            // Get environment data
+            database.ref('Environment').on('value', (snapshot) => {
+                const data = snapshot.val();
+                console.log('Environment Data:', data);
+                document.getElementById('temperature-value').textContent = data.Temperature;
+                document.getElementById('humidity-value').textContent = data.Humidity;
+            });
+            
+            // Get moisture levels
+            database.ref('Moisture').on('value', (snapshot) => {
+                const data = snapshot.val();
+                const moistureGrid = document.getElementById('moisture-grid');
+                moistureGrid.innerHTML = '';
+                
+                Object.keys(data).forEach(block => {
+                    const value = data[block];
+                    let status = 'Good';
+                    let className = 'good';
+                    
+                    if (value < 30) {
+                        status = 'Low';
+                        className = 'low';
+                    } else if (value < 60) {
+                        status = 'Medium';
+                        className = 'medium';
+                    }
+                    
+                    const card = document.createElement('div');
+                    card.className = `moisture-card ${className}`;
+                    card.innerHTML = `
+                        <h3>${block}</h3>
+                        <div class="moisture-value">${value}</div>
+                        <div class="moisture-status">${status}</div>
+                    `;
+                    
+                    moistureGrid.appendChild(card);
+                });
+            });
+            
+            // Get control states
+            database.ref('Control').on('value', (snapshot) => {
+                const data = snapshot.val();
+                const controlGrid = document.getElementById('control-grid');
+                controlGrid.innerHTML = '';
+                
+                Object.keys(data).forEach(relay => {
+                    const isOn = data[relay] === 1;
+                    
+                    const card = document.createElement('div');
+                    card.className = 'control-card';
+                    card.innerHTML = `
+                        <h3>${relay}</h3>
+                        <label class="switch">
+                            <input type="checkbox" id="${relay}-toggle" ${isOn ? 'checked' : ''}>
+                            <span class="slider"></span>
+                        </label>
+                    `;
+                    
+                    controlGrid.appendChild(card);
+                    
+                    // Add event listener to toggle
+                    setTimeout(() => {
+                        document.getElementById(`${relay}-toggle`).addEventListener('change', function() {
+                            const value = this.checked ? 1 : 0;
+                            database.ref(`Control/${relay}`).set(value);
+                        });
+                    }, 100);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
